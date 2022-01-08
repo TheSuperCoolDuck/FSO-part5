@@ -3,6 +3,27 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = ({message})=>{
+  const notificationStyle={
+    background: 'lightgray',
+    fontSize:20,
+    borderStyle:'solid',
+    borderRadius:5,
+    padding:10,
+    marginBottom:10
+  }
+
+  if(message===null){
+    return null
+  }
+
+  return(
+    <div style={notificationStyle}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   
@@ -13,6 +34,8 @@ const App = () => {
   const [username, setUsername] = useState([])
   const [password, setPassword] = useState([])
   const [user, setUser] = useState(null)
+
+  const [message, setMessage] = useState(null)
 
   const handleLogout = (event) => {
     event.preventDefault()
@@ -37,7 +60,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (expection){
-      console.log('wrong credentials')
+      displayNotification('wrong username or password')
     }
   }
 
@@ -63,6 +86,8 @@ const App = () => {
       likes: 0
     }
 
+    displayNotification(`a new blog ${title} by ${author} added`)
+
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -87,6 +112,14 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const displayNotification = (message)=>{
+    setMessage(message)
+
+    setTimeout(()=>{
+      setMessage(null)
+    },2000)
+  }
 
   const loginForm= () =>(
     <form onSubmit={handleLogin}>
@@ -138,10 +171,14 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <Notification message={message}/>
       {user===null ?
-        loginForm() :
         <div>
+          <h2>log in to application</h2>
+          {loginForm()}
+        </div> :
+        <div>
+          <h2>blogs</h2>
           <p>{user.name} logged-in <button onClick={handleLogout}>logout</button></p>
           <h2>create new</h2>
           {blogForm()}
