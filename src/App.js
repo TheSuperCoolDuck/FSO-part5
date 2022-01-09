@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -27,10 +28,6 @@ const Notification = ({message})=>{
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
  
   const [username, setUsername] = useState([])
   const [password, setPassword] = useState([])
@@ -65,37 +62,13 @@ const App = () => {
     }
   }
 
-  const handleBlogTitleChange=(event)=>{
-    setTitle(event.target.value)
-  }
-
-  const handleBlogAuthorChange=(event)=>{
-    setAuthor(event.target.value)
-  }
-
-  const handleBlogUrlChange=(event)=>{
-    setUrl(event.target.value)
-  }
-
-  const addBlog = (event) =>{
-    event.preventDefault()
-    const blogObject = {
-      id: blogs.length+1,
-      title: title,
-      author: author,
-      url: url,
-      likes: 0
-    }
-
-    displayNotification(`a new blog ${title} by ${author} added`)
+  const addBlog = (blogObject) =>{
+    displayNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
 
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setTitle('')
-        setAuthor('')
-        setUrl('')
       })
   }
 
@@ -148,27 +121,7 @@ const App = () => {
 
   const blogForm = () =>(
     <Togglable buttonLabel='create new blog'>
-      <form onSubmit={addBlog}>
-        <div>title
-          <input
-          value = {title}
-          onChange={handleBlogTitleChange}
-          />
-        </div>
-        <div>author
-          <input
-          value = {author}
-          onChange={handleBlogAuthorChange}
-          />
-        </div>
-        <div>url
-          <input
-          value = {url}
-          onChange={handleBlogUrlChange}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      <BlogForm createBlog={addBlog}/>
     </Togglable>
   )
 
