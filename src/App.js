@@ -73,6 +73,14 @@ const App = () => {
         })
   }
 
+  const deleteBlog = (id) =>{
+    blogService
+      .remove(id)
+      .then(returnedId=>{
+        setBlogs(blogs.filter(blog=>blog.id!==returnedId))
+        })
+  }
+
   const addBlog = (blogObject) =>{
     displayNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
 
@@ -152,7 +160,11 @@ const App = () => {
           <h2>create new</h2>
           {blogForm()}
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} likeBlog={()=>likeBlog(blog.id)} />
+            <Blog 
+              key={blog.id} 
+              blog={blog} 
+              likeBlog={()=>likeBlog(blog.id)}
+              deleteBlog={()=>deleteBlog(blog.id)} />
           )}
         </div>
       }
