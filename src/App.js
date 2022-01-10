@@ -62,6 +62,17 @@ const App = () => {
     }
   }
 
+  const likeBlog = (id) => {
+    const blog = blogs.find(b=>b.id===id)
+    const changedBlog = {...blog, likes:blog.likes+1}
+
+    blogService
+      .update(blog.id, changedBlog)
+      .then(returnedBlog=>{
+        setBlogs(blogs.map(blog=>blog.id!==id?blog:returnedBlog))
+        })
+  }
+
   const addBlog = (blogObject) =>{
     displayNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
 
@@ -139,7 +150,7 @@ const App = () => {
           <h2>create new</h2>
           {blogForm()}
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} likeBlog={()=>likeBlog(blog.id)} />
           )}
         </div>
       }
