@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({blog, likeBlog, deleteBlog}) => {
+const Blog = ({ blog, likeBlog, deleteBlog }) => {
   const [viewDetails, setViewDetails] = useState(false)
 
   const buttonLabel = viewDetails ? 'hide' : 'view'
 
-  const handleDetailClick = (event) =>{
+  const handleDetailClick = () => {
     setViewDetails(!viewDetails)
   }
 
@@ -22,25 +22,25 @@ const Blog = ({blog, likeBlog, deleteBlog}) => {
     <div style={blogStyle}>
       <div>
         {blog.title} <button onClick={handleDetailClick}>{buttonLabel}</button>
-      </div> 
+      </div>
 
       {viewDetails ?
-      <>
-        <div>
-          {blog.url}
-        </div>
-        <div>
+        <>
+          <div>
+            {blog.url}
+          </div>
+          <div>
           likes {blog.likes} <button onClick={likeBlog}>like</button>
-        </div>
-        <div>
-          {blog.author}
-        </div>
-        <button onClick={deleteBlog}>
+          </div>
+          <div>
+            {blog.author}
+          </div>
+          <button onClick={deleteBlog}>
           remove
-        </button>
-      </> : 
-      <></>}
-      
+          </button>
+        </> :
+        <></>}
+
     </div>
   )
 }
