@@ -136,6 +136,8 @@ const App = () => {
     </Togglable>
   )
 
+  blogs.sort((a,b)=>a.likes-b.likes).reverse()
+
   return (
     <div>
       <Notification message={message}/>
