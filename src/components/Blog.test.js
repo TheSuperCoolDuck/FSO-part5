@@ -56,7 +56,7 @@ test('displays url and likes when button is pressed',() => {
   )
 })
 
-test('clicking the like button twice will call like func twice', ()=>{
+test('clicking the like button twice will call like func twice', () => {
   const blog = {
     title: 'Component testing',
     author: 'John Doe',
