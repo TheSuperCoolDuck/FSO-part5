@@ -21,7 +21,7 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   return(
     <div style={blogStyle}>
       <div>
-        {blog.title} <button onClick={handleDetailClick}>{buttonLabel}</button>
+        {blog.title} By {blog.author} <button onClick={handleDetailClick}>{buttonLabel}</button>
       </div>
 
       {viewDetails ?
@@ -31,9 +31,6 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
           </div>
           <div>
           likes {blog.likes} <button onClick={likeBlog}>like</button>
-          </div>
-          <div>
-            {blog.author}
           </div>
           <button onClick={deleteBlog}>
           remove
