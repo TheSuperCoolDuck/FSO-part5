@@ -92,9 +92,9 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService
+      .getAll()
+      .then(blogs => setBlogs( blogs ))
   }, [])
 
   useEffect(() => {
@@ -113,6 +113,8 @@ const App = () => {
       setMessage(null)
     },2000)
   }
+
+  console.log(blogs)
 
   const loginForm= () => (
     <form onSubmit={handleLogin}>
