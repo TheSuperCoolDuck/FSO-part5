@@ -1,3 +1,12 @@
+Cypress.Commands.add('login', ({username, password})=>{
+  cy.request('POST','http://localhost:3003/api/login',{
+    username, password
+  }).then(response=>{
+    localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body))
+    cy.visit('http://localhost:3000')
+  })
+})
+
 describe('Blog app', function(){
   beforeEach(function(){
     cy.request('POST','http://localhost:3003/api/testing/reset')
@@ -36,6 +45,24 @@ describe('Blog app', function(){
       cy.contains('wrong username or password')
 
       cy.get('html').should('not.contain', "Superuser logged-in")
+    })
+
+    describe('when logged in', function(){
+      beforeEach(function(){
+        cy.login({username: 'root', password: 'Password123'})
+      })
+
+      it('A blog can be created', function(){
+        cy.contains('create new blog').click()
+        cy.get('#title').type('a blog created by cypress')
+        cy.get('#author').type('cypress')
+        cy.get('#url').type('localhost')
+        
+        cy.get('#submit-button').click()
+
+        cy.contains('a blog created by cypress by cypress')
+
+      })
     })
   })
 })

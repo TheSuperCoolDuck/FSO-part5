@@ -7,7 +7,7 @@ import loginService from './services/login'
 
 const Notification = ({ message }) => {
   const notificationStyle={
-    background: 'red',
+    background: 'lightgray',
     fontSize:20,
     borderStyle:'solid',
     borderRadius:5,
