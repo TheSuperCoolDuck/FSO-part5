@@ -12,6 +12,7 @@
 /build
 
 # misc
+/cypress/videos
 .DS_Store
 .env.local
 .env.development.local

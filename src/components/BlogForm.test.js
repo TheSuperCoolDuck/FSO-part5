@@ -27,8 +27,6 @@ test('<BlogForm /> updates parent state ',() => {
   })
   fireEvent.submit(form)
 
-  console.log(createBlog.mock.calls)
-
   expect(createBlog.mock.calls).toHaveLength(1)
   expect(createBlog.mock.calls[0][0].title).toBe('testing form')
   expect(createBlog.mock.calls[0][0].author).toBe('tester')
