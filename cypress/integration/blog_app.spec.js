@@ -39,6 +39,13 @@ describe('Blog app', function(){
         password: 'Password123'
       }
       cy.request('POST', 'http://localhost:3003/api/users', user)
+
+      const user2 = {
+        name: 'Another User',
+        username: 'user',
+        password: 'Dragon1'
+      }
+      cy.request('POST', 'http://localhost:3003/api/users', user2)
     })
 
     it('succeed with correct credentials', function(){
@@ -86,7 +93,7 @@ describe('Blog app', function(){
           })
         })
 
-        it.only('it can be liked', function(){
+        it('it can be liked', function(){
           cy
             .contains('another cypress blog By cypress')
             .contains('view')
@@ -106,6 +113,39 @@ describe('Blog app', function(){
             .contains('another cypress blog By cypress')
             .parent()
             .contains('likes 1')
+        })
+
+        it('it can be deleted by creator', function(){
+          cy
+            .contains('another cypress blog By cypress')
+            .contains('view')
+            .click()
+
+          cy
+            .contains('another cypress blog By cypress')
+            .get('#delete-button')
+            .click()
+
+          cy.contains('another cypress blog By cypress').should('not.exist')
+        })
+
+        it('it cannot be deleted by non-creator', function(){
+          cy
+            .contains('logout').click()
+
+          cy.login({ username: 'user', password: 'Dragon1' })
+
+          cy
+            .contains('another cypress blog By cypress')
+            .contains('view')
+            .click()
+
+          cy
+            .contains('another cypress blog By cypress')
+            .get('#delete-button')
+            .click()
+
+          cy.contains('another cypress blog By cypress')
         })
       })
     })

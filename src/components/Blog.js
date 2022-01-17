@@ -32,7 +32,7 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
           <div>
           likes {blog.likes} <button id='like-button' onClick={likeBlog}>like</button>
           </div>
-          <button onClick={deleteBlog}>
+          <button id="delete-button" onClick={deleteBlog}>
           remove
           </button>
         </> :
