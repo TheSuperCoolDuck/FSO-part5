@@ -19,7 +19,7 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   }
 
   return(
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
         {blog.title} By {blog.author} <button onClick={handleDetailClick}>{buttonLabel}</button>
       </div>

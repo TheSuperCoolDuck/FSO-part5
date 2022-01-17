@@ -20,6 +20,10 @@ Cypress.Commands.add('createBlog', ({ title, author, url }) => {
   cy.visit('http://localhost:3000')
 })
 
+Cypress.Commands.add('removeToken', () => {
+  localStorage.removeItem('loggedBlogappUser')
+})
+
 describe('Blog app', function(){
   beforeEach(function(){
     cy.request('POST','http://localhost:3003/api/testing/reset')
@@ -84,7 +88,7 @@ describe('Blog app', function(){
 
       })
 
-      describe('and a note exist', function(){
+      describe('and a blog exist', function(){
         beforeEach(function(){
           cy.createBlog({
             title: 'another cypress blog',
@@ -146,6 +150,144 @@ describe('Blog app', function(){
             .click()
 
           cy.contains('another cypress blog By cypress')
+
+          cy.removeToken()
+        })
+
+        describe('and several blogs exist',function(){
+          beforeEach(function(){
+            cy.createBlog({
+              title: 'another cypress blog 2',
+              author: 'cypress',
+              url: 'localhost'
+            })
+
+            cy.createBlog({
+              title: 'another cypress blog 3',
+              author: 'cypress',
+              url: 'localhost'
+            })
+
+            cy.createBlog({
+              title: 'another cypress blog 4',
+              author: 'cypress',
+              url: 'localhost'
+            })
+
+            cy.createBlog({
+              title: 'another cypress blog 5',
+              author: 'cypress',
+              url: 'localhost'
+            })
+          })
+
+          it('blogs are sorted in order of likes',function(){
+            cy
+              .contains('another cypress blog 2 By cypress')
+              .contains('view')
+              .click()
+
+            cy
+              .contains('another cypress blog 2 By cypress')
+              .parent()
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 1')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 2')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 3')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 4')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 5')
+              .find('#like-button')
+              .click()
+
+            cy
+              .contains('another cypress blog 3 By cypress')
+              .contains('view')
+              .click()
+
+            cy
+              .contains('another cypress blog 3 By cypress')
+              .parent()
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 1')
+              .find('#like-button')
+              .click()
+
+            cy
+              .contains('another cypress blog 4 By cypress')
+              .contains('view')
+              .click()
+
+            cy
+              .contains('another cypress blog 4 By cypress')
+              .parent()
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 1')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 2')
+              .find('#like-button')
+              .click()
+              .parent()
+              .contains('likes 3')
+              .find('#like-button')
+              .click()
+
+            cy
+              .contains('another cypress blog 5 By cypress')
+              .contains('view')
+              .click()
+
+            cy
+              .contains('another cypress blog 5 By cypress')
+              .parent()
+              .find('#like-button')
+              .click()
+
+            cy
+              .get('.blog')
+              .eq(0)
+              .should('contain','another cypress blog 2 By cypress')
+
+            cy
+              .get('.blog')
+              .eq(1)
+              .should('contain','another cypress blog 4 By cypress')
+
+            cy
+              .get('.blog')
+              .eq(2)
+              .should('contain','another cypress blog 3 By cypress')
+
+            cy
+              .get('.blog')
+              .eq(3)
+              .should('contain','another cypress blog 5 By cypress')
+
+            cy
+              .get('.blog')
+              .eq(4)
+              .should('contain','another cypress blog By cypress')
+
+          })
         })
       })
     })
